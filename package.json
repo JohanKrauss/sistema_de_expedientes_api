@@ -24,6 +24,7 @@
         "@inertiajs/inertia-vue3": "^0.6.0",
         "@quasar/extras": "^1.16.10",
         "quasar": "^2.15.1",
-        "vue-router": "^4.3.0"
+        "vue-router": "^4.3.0",
+        "ziggy-js": "^2.1.0"
     }
 }

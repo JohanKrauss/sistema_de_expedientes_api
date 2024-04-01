@@ -23,7 +23,7 @@ Route::get('/', function () {
 });
 
 //Router para mandar a crear un nuevo usuario
-Route::get('/usuarios/create', [UsersController::class, 'create'])->name('usuarios.create');
+Route::get('/usuarios/crear', [UsersController::class, 'create'])->name('user.create');
 
 
 Route::prefix('/usuarios')->middleware('auth')->group(function () {

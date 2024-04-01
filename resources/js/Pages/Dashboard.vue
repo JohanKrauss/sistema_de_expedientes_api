@@ -1,60 +1,48 @@
-<script>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
-import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+<script setup>
+import { Head } from '@inertiajs/inertia-vue3';
+import AuthenticatedLayout from '../Layouts/AuthenticatedLayout.vue';
+import { ref, onMounted, reactive } from 'vue';
+import { Inertia } from '@inertiajs/inertia';
+import { route } from 'ziggy-js';
 
-export default {
-  props: ['routeName'],
-  data() {
-    return {
-      users: [],
-      loading: false
-    };
-  },
-  mounted() {
-    this.fetchUsers();
-  },
-  methods: {
-    async fetchUsers() {
-      try {
-        this.loading = true;
+const leftDrawerOpen = ref(false);
+const link = ref('tabla');
+
+const state = reactive({
+    users: [],
+    loading: false,
+});
+
+const toggleLeftDrawer = () => {
+    leftDrawerOpen.value = !leftDrawerOpen.value;
+};
+
+const fetchUsers = async () => {
+    try {
+        state.loading = true; // Cambiado de `this.loading` a `state.loading`
         const response = await fetch('/users');
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+            throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log(data);
-        this.users = data.users;
-      } catch (error) {
+        state.users = data.users;
+    } catch (error) {
         console.error('Error fetching users:', error);
-      } finally {
-        this.loading = false;
-      }
-    },
-
-   async getRouteUrl(routeName) {
-      const route = useRoute();
-      return awaitroute.resolve({ name: routeName }).href;
+    } finally {
+        state.loading = false; // Cambiado de `this.loading` a `state.loading`
     }
-  },
+};
 
-  setup() {
-    const leftDrawerOpen = ref(false)
+const goUserResource = (routeName) => {
+    Inertia.visit(route(routeName));
+};
 
-    return {
-      leftDrawerOpen,
-      link: ref('tabla'),
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
-  }
-}
+onMounted(async () => {
+    await fetchUsers();
+})
 </script>
 
 <template>
-
   <Head title="Dashboard" />
   <AuthenticatedLayout>
     <q-layout view="hHh lpR fFf">
@@ -84,17 +72,18 @@ export default {
               <q-item-label>Lista de usuarios</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable v-ripple :active="link === 'create'" @click="link = 'create'" active-class="my-menu-link" tag="a" :to="getRouteUrl('usuarios.create')">
-            <q-item-section>
-              <q-item-label>Crear usuario</q-item-label>
-            </q-item-section>
-          </q-item>
+            <q-item clickable v-ripple :active="link === 'create'" active-class="my-menu-link" tag="a" @click="goUserResource('user.create')">
+                <q-item-section>
+                    <q-item-label>Crear usuario</q-item-label>
+                </q-item-section>
+            </q-item>
+
         </q-list>
       </q-drawer>
 
       <q-page-container class="full-height full-width q-pa-md">
         <div class="main">
-          <q-table title="Usuarios" :rows="users" :columns="[
+          <q-table title="Usuarios" :rows="state.users" :columns="[
             { name: 'name', label: 'Nombre', align: 'left', field: row => row.name },
             { name: 'email', label: 'Correo', align: 'left', field: row => row.email }
           ]" row-key="id" />

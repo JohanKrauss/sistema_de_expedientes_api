@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "78d26f555a67d7d89a4f0b89b9f7449e",
+    "content-hash": "fb9fd2852d4f6ff830a71505a05d080f",
     "packages": [
         {
             "name": "brick/math",
@@ -5554,16 +5554,16 @@
         },
         {
             "name": "tightenco/ziggy",
-            "version": "v2.0.5",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tighten/ziggy.git",
-                "reference": "3b718738ee61817b90349fa00c53ead85f86e5d0"
+                "reference": "f2ce6091078109f434e295a17adfac7378257ace"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tighten/ziggy/zipball/3b718738ee61817b90349fa00c53ead85f86e5d0",
-                "reference": "3b718738ee61817b90349fa00c53ead85f86e5d0",
+                "url": "https://api.github.com/repos/tighten/ziggy/zipball/f2ce6091078109f434e295a17adfac7378257ace",
+                "reference": "f2ce6091078109f434e295a17adfac7378257ace",
                 "shasum": ""
             },
             "require": {
@@ -5616,9 +5616,9 @@
             ],
             "support": {
                 "issues": "https://github.com/tighten/ziggy/issues",
-                "source": "https://github.com/tighten/ziggy/tree/v2.0.5"
+                "source": "https://github.com/tighten/ziggy/tree/v2.1.0"
             },
-            "time": "2024-03-19T23:36:15+00:00"
+            "time": "2024-03-26T16:04:23+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
