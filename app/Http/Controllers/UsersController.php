@@ -20,4 +20,20 @@ class UsersController extends Controller
     {
         return Inertia::render('Users/Create');
     }
+
+    public function store(Request $request)
+    {
+
+        return 'hola';
+
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        User::create($request->all());
+
+        return redirect()->route('user.index');
+    }
 }

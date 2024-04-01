@@ -22,14 +22,13 @@ Route::get('/', function () {
 
 Route::get('/', function () {
     return Inertia('Dashboard');
-});
-
-//Router para mandar a crear un nuevo usuario
-Route::get('/usuarios/crear', [UsersController::class, 'create'])->name('user.create');
+})->name('dashboard');
 
 
-Route::prefix('/usuarios')->middleware('auth')->group(function () {
-    Route::resource('/', UsersController::class)->only(['index']);
+Route::prefix('/usuarios')->group(function () {
+    Route::get('/', [UsersController::class, 'index'])->name('user.index');
+    Route::get('/crear', [UsersController::class, 'create'])->name('user.create');
+    Route::post('/agregar', [UsersController::class, 'store'])->name('user.store');
 });
 
 Route::middleware('auth')->group(function () {
