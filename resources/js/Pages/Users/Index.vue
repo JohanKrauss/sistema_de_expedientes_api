@@ -1,70 +1,44 @@
-<script setup lang="js">
-import {ref, computed, nextTick, onMounted, reactive } from 'vue'
-import { usePage } from '@inertiajs/inertia-vue3';
-
-const { props } = usePage();
-
-const columns = [
-    {
-        name: 'id',
-        label: 'ID',
-        field: row => row.id
+<script>
+export default {
+    data() {
+        return {
+            users: [],
+            loading: false
+        };
     },
-    {
-        name: 'name',
-        label: 'Name',
-        field: row => row.name,
-        sortable: true
+    mounted() {
+        this.fetchUsers();
     },
-]
-
-const allRows = computed(() => users || [])
-const lastPage = computed(() => Math.ceil(allRows.value.length / pageSize))
-
-const pageSize = 50
-
-const nextPage = ref(2)
-const loading = ref(false)
-const rows = computed(() => allRows.slice(0, pageSize * (nextPage.value - 1)))
-const pagination = { rowsPerPage: 0 }
-
-function onScroll ({ to, ref }) {
-    const lastIndex = rows.value.length - 1
-
-    if (loading.value !== true && nextPage.value < lastPage && to === lastIndex) {
-        loading.value = true
-
-        setTimeout(() => {
-            nextPage.value++
-            nextTick(() => {
-                ref.refresh()
-                loading.value = false
-            })
-        }, 500)
+    methods: {
+        async fetchUsers() {
+            try {
+                this.loading = true;
+                const response = await fetch('/users');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                console.log(data);
+                this.users = data.users;
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            } finally {
+                this.loading = false;
+            }
+        }
     }
-}
-
-onMounted(() => {
-    console.log(props.value)
-});
+};
 </script>
+
 <template>
     <div>
-        <table>
-            <thead>
-            <tr>
-                <th v-for="column in columns" :key="column.name">
-                    {{ column.label }}
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="user in users" :key="user.id">
-                <td v-for="column in columns" :key="column.name">
-                    {{ typeof column.field === 'function' ? column.field(user) : user[column.field] }}
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <h2>Lista de Usuarios</h2>
+        <ul v-if="!loading">
+            <li v-for="user in users" :key="user.id">
+                {{ user.name }} - {{ user.email }}
+            </li>
+
+        </ul>
+        <p v-else>Cargando...</p>
     </div>
 </template>

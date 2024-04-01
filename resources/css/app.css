@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.my-menu-link {
+  color: #000;
+  text-decoration: none;
+}
