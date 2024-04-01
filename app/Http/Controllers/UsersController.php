@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\UserCreate;
 use Inertia\Inertia;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
 {
@@ -21,19 +22,25 @@ class UsersController extends Controller
         return Inertia::render('Users/Create');
     }
 
-    public function store(Request $request)
+    public function store(UserCreate $request)
     {
+        try {
+            /*
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
 
-        return 'hola';
-
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-
-        User::create($request->all());
-
-        return redirect()->route('user.index');
+            $user->save();
+            */
+            $data = $request->all();
+            User::create([
+                'name' => $data['name'],
+                'email' => 'johan.guzmanpe@gmail.com',
+                'password' => bcrypt('12345678')
+            ]);
+            return response()->json(['status' => true, 'message' => 'User created successfully!']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 }
